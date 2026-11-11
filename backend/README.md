@@ -1,6 +1,6 @@
 # Task Management System - Backend API
 
-RESTful API untuk aplikasi pengelolaan tugas berbasis web, dibangun menggunakan Golang, Gin, dan MySQL (Raw SQL). Proyek ini merupakan pemenuhan tugas Praktik Kerja Lapangan (PKL).
+RESTful API menggunakan Golang, Gin, dan MySQL (Raw SQL). Project untuk tugas Praktik Kerja Lapangan (PKL).
 
 # Teknologi
 * **Bahasa :** Golang
@@ -14,7 +14,7 @@ RESTful API untuk aplikasi pengelolaan tugas berbasis web, dibangun menggunakan 
 * Git
 * Postman (Untuk pengujian API)
 
-## Cara Menjalankan Server
+# Cara Menjalankan Server
 1. Clone repository ini.
 2. Buat database `task_management` di MySQL dan jalankan script SQL di folder `migrations/`.
 3. Salin file `.env.example` menjadi `.env` dan sesuaikan kredensial database Anda.
