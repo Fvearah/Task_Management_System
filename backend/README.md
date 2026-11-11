@@ -2,16 +2,17 @@
 
 RESTful API untuk aplikasi pengelolaan tugas berbasis web, dibangun menggunakan Golang, Gin, dan MySQL (Raw SQL). Proyek ini merupakan pemenuhan tugas Praktik Kerja Lapangan (PKL).
 
-## Teknologi
-* **Bahasa:** Golang
-* **Framework:** Gin HTTP Framework
-* **Database:** MySQL (via `database/sql` & `go-sql-driver/mysql`)
-* **Autentikasi:** JWT & bcrypt
+# Teknologi
+* **Bahasa :** Golang
+* **Framework :** Gin HTTP Framework
+* **Database :** MySQL (via `database/sql` & `go-sql-driver/mysql`)
+* **Autentikasi :** JWT & bcrypt
 
-## Prasyarat
+# Prasyarat
 * Go 1.20+
 * MySQL (XAMPP / Laragon)
 * Git
+* Postman (Untuk pengujian API)
 
 ## Cara Menjalankan Server
 1. Clone repository ini.
