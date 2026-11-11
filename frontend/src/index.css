@@ -1,0 +1,310 @@
+@import url("https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600&display=swap");
+@import "tailwindcss";
+
+/* Tema gelap dikendalikan class .dark di <html> (lihat sun-moon-theme-toggle) */
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --background: #f5f6f8;
+  --surface: #ffffff;
+  --subtle: #eef0f3;
+  --line: #e2e5ea;
+  --ink: #0f1419;
+  --muted: #5b6472;
+  --accent: #047857;
+  --accent-strong: #065f46;
+  --accent-fg: #ffffff;
+  --danger: #dc2626;
+  --danger-text: #b91c1c;
+  --glow-backdrop: hsl(0 0% 100% / 0.85);
+  --glow-border: #e2e5ea;
+  --glass-bg: rgb(255 255 255 / 0.55);
+  --glass-border: rgb(255 255 255 / 0.75);
+  --glass-highlight: rgb(255 255 255 / 0.9);
+  --glass-shadow: 0 24px 60px -28px rgb(15 23 42 / 0.35);
+  --field-bg: rgb(255 255 255 / 0.6);
+  --field-border: rgb(15 23 42 / 0.12);
+  --blob-opacity: 0.35;
+  color-scheme: light;
+}
+
+.dark {
+  --background: #0a0c10;
+  --surface: #11141a;
+  --subtle: #1a1e26;
+  --line: #242a34;
+  --ink: #e8eaee;
+  --muted: #8d95a3;
+  --accent: #34d399;
+  --accent-strong: #6ee7b7;
+  --accent-fg: #052e22;
+  --danger: #dc2626;
+  --danger-text: #f87171;
+  --glow-backdrop: hsl(0 0% 60% / 0.08);
+  --glow-border: hsl(0 0% 60% / 0.14);
+  --glass-bg: rgb(255 255 255 / 0.05);
+  --glass-border: rgb(255 255 255 / 0.1);
+  --glass-highlight: rgb(255 255 255 / 0.14);
+  --glass-shadow: 0 28px 70px -30px rgb(0 0 0 / 0.8);
+  --field-bg: rgb(255 255 255 / 0.05);
+  --field-border: rgb(255 255 255 / 0.12);
+  --blob-opacity: 0.22;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --font-sans: "Schibsted Grotesk", ui-sans-serif, system-ui, sans-serif;
+
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-subtle: var(--subtle);
+  --color-line: var(--line);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-accent-fg: var(--accent-fg);
+  --color-danger: var(--danger);
+  --color-danger-text: var(--danger-text);
+}
+
+body {
+  background-color: var(--background);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+@layer components {
+  .input {
+    @apply w-full rounded-lg border border-line bg-surface px-3 py-2 text-sm text-ink transition-colors placeholder:text-muted/70 focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/25 disabled:opacity-60;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-3.5 py-2 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-primary {
+    @apply bg-accent text-accent-fg hover:bg-accent-strong;
+  }
+  .btn-secondary {
+    @apply border border-line bg-surface text-ink hover:bg-subtle;
+  }
+  .btn-danger {
+    @apply bg-danger text-white hover:opacity-90;
+  }
+
+  .icon-btn {
+    @apply rounded-lg p-2 text-muted transition-colors hover:bg-subtle hover:text-ink focus-visible:outline-2 focus-visible:outline-accent;
+  }
+  .icon-btn-danger {
+    @apply rounded-lg p-2 text-muted transition-colors hover:bg-danger/10 hover:text-danger-text focus-visible:outline-2 focus-visible:outline-accent;
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-1 rounded-md bg-subtle px-2 py-0.5 text-xs text-muted;
+  }
+}
+
+/* Animasi masuk halaman dan dialog */
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+@keyframes dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+.page-enter {
+  animation: page-in 220ms ease-out;
+}
+dialog[open] {
+  animation: dialog-in 160ms ease-out;
+}
+dialog::backdrop {
+  animation: fade-in 160ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-enter,
+  dialog[open],
+  dialog::backdrop {
+    animation: none;
+  }
+}
+
+/* Spotlight card (referensi: spotlight-card, dipakai di DashboardPage.jsx).
+   GlowCard mengisi --x/--y dengan posisi kursor; efeknya digambar di sini. */
+[data-glow] {
+  --radius: 14;
+  --border: 3;
+  --size: 200;
+  --outer: 1;
+  --border-size: calc(var(--border) * 1px);
+  --spotlight-size: calc(var(--size) * 1px);
+  --hue: calc(var(--base) + (var(--xp, 0) * var(--spread, 0)));
+  position: relative;
+  border: var(--border-size) solid var(--glow-border);
+  border-radius: calc(var(--radius) * 1px);
+  background-color: var(--glow-backdrop);
+  background-image: radial-gradient(
+    var(--spotlight-size) var(--spotlight-size) at calc(var(--x, 0) * 1px) calc(var(--y, 0) * 1px),
+    hsl(var(--hue, 210) calc(var(--saturation, 100) * 1%) calc(var(--lightness, 70) * 1%) / var(--bg-spot-opacity, 0.1)),
+    transparent
+  );
+  background-size: calc(100% + (2 * var(--border-size))) calc(100% + (2 * var(--border-size)));
+  background-position: 50% 50%;
+  background-attachment: fixed;
+  backdrop-filter: blur(5px);
+}
+
+[data-glow]::before,
+[data-glow]::after {
+  pointer-events: none;
+  content: "";
+  position: absolute;
+  inset: calc(var(--border-size) * -1);
+  border: var(--border-size) solid transparent;
+  border-radius: calc(var(--radius) * 1px);
+  background-attachment: fixed;
+  background-size: calc(100% + (2 * var(--border-size))) calc(100% + (2 * var(--border-size)));
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  mask: linear-gradient(transparent, transparent), linear-gradient(white, white);
+  mask-clip: padding-box, border-box;
+  mask-composite: intersect;
+}
+
+[data-glow]::before {
+  background-image: radial-gradient(
+    calc(var(--spotlight-size) * 0.75) calc(var(--spotlight-size) * 0.75) at calc(var(--x, 0) * 1px) calc(var(--y, 0) * 1px),
+    hsl(var(--hue, 210) calc(var(--saturation, 100) * 1%) calc(var(--lightness, 50) * 1%) / var(--border-spot-opacity, 1)),
+    transparent 100%
+  );
+  filter: brightness(2);
+}
+
+[data-glow]::after {
+  background-image: radial-gradient(
+    calc(var(--spotlight-size) * 0.5) calc(var(--spotlight-size) * 0.5) at calc(var(--x, 0) * 1px) calc(var(--y, 0) * 1px),
+    hsl(0 100% 100% / var(--border-light-opacity, 1)),
+    transparent 100%
+  );
+}
+
+/* Lapisan dalam: cahaya blur di luar tepi kartu */
+[data-glow] [data-glow] {
+  position: absolute;
+  inset: 0;
+  will-change: filter;
+  opacity: var(--outer, 1);
+  border-radius: calc(var(--radius) * 1px);
+  filter: blur(calc(var(--border-size) * 10));
+  background: none;
+  backdrop-filter: none;
+  pointer-events: none;
+  border: none;
+}
+
+[data-glow] > [data-glow]::before {
+  inset: -10px;
+  border-width: 10px;
+}
+
+
+/* Halaman login dan register: glassmorphism */
+.glass {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  box-shadow: inset 0 1px 0 0 var(--glass-highlight), var(--glass-shadow);
+  -webkit-backdrop-filter: blur(24px) saturate(150%);
+  backdrop-filter: blur(24px) saturate(150%);
+}
+
+.glass-field {
+  border-radius: 0.75rem;
+  background: var(--field-bg);
+  border: 1px solid var(--field-border);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.glass-field:focus-within {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--accent) 18%, transparent);
+}
+.glass-field.is-invalid {
+  border-color: var(--danger-text);
+}
+.glass-field.is-invalid:focus-within {
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--danger-text) 18%, transparent);
+}
+/* Autofill browser tidak boleh menimpa warna kaca */
+.glass-field input:-webkit-autofill {
+  -webkit-text-fill-color: var(--ink);
+  transition: background-color 9999s ease-out;
+}
+
+/* Cahaya latar yang bergerak pelan di belakang kaca */
+.aurora {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(80px);
+  opacity: var(--blob-opacity);
+  will-change: transform;
+  animation: drift 26s ease-in-out infinite alternate;
+}
+.aurora-a {
+  width: 38rem;
+  height: 38rem;
+  left: -10rem;
+  top: -12rem;
+  background: rgb(16 185 129);
+}
+.aurora-b {
+  width: 34rem;
+  height: 34rem;
+  right: -8rem;
+  top: 22%;
+  background: rgb(56 189 248);
+  animation-duration: 32s;
+  animation-delay: -8s;
+}
+.aurora-c {
+  width: 30rem;
+  height: 30rem;
+  left: 30%;
+  bottom: -14rem;
+  background: rgb(20 184 166);
+  animation-duration: 38s;
+  animation-delay: -16s;
+}
+
+@keyframes drift {
+  to {
+    transform: translate3d(4rem, 3rem, 0) scale(1.1);
+  }
+}
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+.rise {
+  animation: rise 600ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  animation-delay: var(--rise-delay, 0ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .aurora,
+  .rise {
+    animation: none;
+  }
+}
